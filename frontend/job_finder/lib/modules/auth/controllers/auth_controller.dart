@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 import 'package:job_finder/global/config/api/api_configs.dart';
-import 'package:job_finder/global/models/login_response.dart';
+
+import '../../../global/models/login_response.dart';
+
 
 class AuthController {
   static bool isAuthenticated = false;

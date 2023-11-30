@@ -1,13 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:job_finder/global/config/local_storage.dart';
 import 'package:job_finder/global/widgets/error_dialog.dart';
 import 'package:job_finder/modules/auth/controllers/auth_controller.dart';
-import 'package:provider/provider.dart';
-
-import '../../../global/config/network/network_provider.dart';
 import '../../../global/widgets/custom_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -15,7 +10,7 @@ class LoginScreen extends StatefulWidget {
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
-  static String id = "Login";
+  static const String id = "Login";
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -23,32 +18,11 @@ class _LoginScreenState extends State<LoginScreen> {
   String useremail = "";
   String userpass = "";
   bool isbtnSubmitted = false;
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Provider<InternetConnectionProvider>(
-          create: (_) => InternetConnectionProvider(),
-          child: Builder(
-            builder: (context) {
-              final internetConnectionProvider =
-                  Provider.of<InternetConnectionProvider>(context);
-              if (!internetConnectionProvider.isConnected) {
-                return AlertDialog(
-                  title: const Text('No Internet Connection'),
-                  content: const Text(
-                      'Please check your internet connection and try again.'),
-                  actions: [
-                    TextButton(
-                      onPressed: () =>
-                          internetConnectionProvider.checkInternetConnection(),
-                      child: const Text('Retry'),
-                    ),
-                  ],
-                );
-              }
-              return Container(
+        body: Container(
                 height: MediaQuery.sizeOf(context).height,
                 width: MediaQuery.sizeOf(context).width,
                 decoration: const BoxDecoration(
@@ -141,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       result.fold(
                                         (error) {
                                           showErrorDialog(context,
-                                              jsonDecode(error)["message"]);
+                                              error);
                                         },
                                         (loginResponse) async {
                                           await LocalStrorageConfig
@@ -197,10 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-              );
-            },
-          ),
-        ),
+              ),
       ),
     );
   }

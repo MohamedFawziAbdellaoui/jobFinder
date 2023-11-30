@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:job_finder/global/config/api/api_configs.dart';
 import 'package:job_finder/global/config/local_storage.dart';
-import 'package:job_finder/global/models/login_response.dart';
 import 'package:http/http.dart' as http;
 import 'package:job_finder/modules/auth/controllers/auth_controller.dart';
 
+import '../../../global/models/login_response.dart';
 import '../../../global/models/resume.dart';
+
+
 
 class ResumeController {
   ResumeController._();

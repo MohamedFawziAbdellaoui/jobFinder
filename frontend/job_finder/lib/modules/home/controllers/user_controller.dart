@@ -3,10 +3,11 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:job_finder/global/config/api/api_configs.dart';
 import 'package:job_finder/global/config/local_storage.dart';
-import 'package:job_finder/global/models/login_response.dart';
 import 'package:job_finder/modules/auth/controllers/auth_controller.dart';
-import '../../../global/models/user.dart';
 import 'package:http/http.dart' as http;
+
+import '../../../global/models/login_response.dart';
+import '../../../global/models/user.dart';
 
   class UserController {
     static final _userDataController = StreamController<Either<String, User>>();

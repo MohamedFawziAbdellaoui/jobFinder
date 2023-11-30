@@ -1,15 +1,16 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:job_finder/global/config/constants.dart';
 import 'package:job_finder/global/models/job.dart';
 import 'package:job_finder/global/widgets/custom_chip.dart';
 import 'package:job_finder/global/widgets/dialog.dart';
+import 'package:job_finder/modules/home/screens/job_details.dart';
 import '../controllers/job_controller.dart';
 
 class Browse extends StatefulWidget {
-  const Browse({Key? key}) : super(key: key);
+  final String userId;
+  const Browse({Key? key,required this.userId}) : super(key: key);
 
   @override
   _BrowseState createState() => _BrowseState();
@@ -120,7 +121,7 @@ class _BrowseState extends State<Browse> {
                 return Text('Error: ${snapshot.error}');
               } else if (snapshot.hasData) {
                 return snapshot.data!.fold((l) {
-                  showErrorDialog(context, jsonDecode(l)["message"]);
+                  showErrorDialog(context, l);
                   return const Placeholder();
                 }, (jobs) {
                   jobsList = jobs;
@@ -136,108 +137,120 @@ class _BrowseState extends State<Browse> {
                       itemCount: jobsList.length,
                       itemBuilder: (context, index) {
                         final Job job = jobsList[index];
-                        return Container(
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color(0xff00ABC8),
-                                Color.fromRGBO(32, 97, 219, 0.5),
-                              ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => JobDetails(
+                                          jobID: job.sId!,
+                                          userID: "",
+                                        )));
+                          },
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color(0xff00ABC8),
+                                  Color.fromRGBO(32, 97, 219, 0.5),
+                                ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
                             ),
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 20.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  const FlutterLogo(),
-                                  Text(job.title!),
-                                  RichText(
-                                    text: TextSpan(
-                                      text: DateFormat('dd/MM/yy').format(
-                                          DateTime.parse(job.startDate!)),
-                                      style: const TextStyle(
-                                        color: Color.fromRGBO(0, 0, 0, 1),
-                                        fontSize: 10.0,
-                                        fontFamily: 'Lexend',
-                                      ),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text:
-                                              "-${DateFormat('dd/MM/yy').format(DateTime.parse(job.endDate!))}",
-                                          style: const TextStyle(
-                                            fontSize: 10.0,
-                                            fontFamily: 'Lexend',
-                                          ),
+                            padding: const EdgeInsets.symmetric(vertical: 20.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    const FlutterLogo(),
+                                    Text(job.title!),
+                                    RichText(
+                                      text: TextSpan(
+                                        text: DateFormat('dd/MM/yy').format(
+                                            DateTime.parse(job.startDate!)),
+                                        style: const TextStyle(
+                                          color: Color.fromRGBO(0, 0, 0, 1),
+                                          fontSize: 10.0,
+                                          fontFamily: 'Lexend',
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                height: 50,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xff2061DB),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(20),
-                                  ),
-                                ),
-                                // padding:
-                                // const EdgeInsets.symmetric(horizontal: 10),
-                                margin: const EdgeInsets.only(
-                                  left: 20,
-                                  right: 20,
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    job.description!,
-                                    maxLines: 2,
-                                    style: const TextStyle(
-                                      overflow: TextOverflow.ellipsis,
-                                      fontSize: 12,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(job.duration!),
-                                  RichText(
-                                    text: TextSpan(
-                                      text: job.startTime!,
-                                      style: const TextStyle(
-                                        color: Color.fromRGBO(0, 0, 0, 1),
-                                        fontSize: 10.0,
-                                        fontFamily: 'Lexend',
-                                      ),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: "-${job.endTime!}}",
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 10.0,
-                                            fontFamily: 'Lexend',
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text:
+                                                "-${DateFormat('dd/MM/yy').format(DateTime.parse(job.endDate!))}",
+                                            style: const TextStyle(
+                                              fontSize: 10.0,
+                                              fontFamily: 'Lexend',
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  height: 50,
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xff2061DB),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(20),
                                     ),
                                   ),
-                                  Text("${job.price!} DT")
-                                ],
-                              )
-                            ],
+                                  // padding:
+                                  // const EdgeInsets.symmetric(horizontal: 10),
+                                  margin: const EdgeInsets.only(
+                                    left: 20,
+                                    right: 20,
+                                    top: 10,
+                                    bottom: 10,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      job.description!,
+                                      maxLines: 2,
+                                      style: const TextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                        fontSize: 12,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(job.duration!),
+                                    RichText(
+                                      text: TextSpan(
+                                        text: job.startTime!,
+                                        style: const TextStyle(
+                                          color: Color.fromRGBO(0, 0, 0, 1),
+                                          fontSize: 10.0,
+                                          fontFamily: 'Lexend',
+                                        ),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text: "-${job.endTime!}}",
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 10.0,
+                                              fontFamily: 'Lexend',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Text("${job.price!} DT")
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         );
                       },

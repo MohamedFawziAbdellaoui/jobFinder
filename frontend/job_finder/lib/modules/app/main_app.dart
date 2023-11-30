@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:job_finder/modules/home/home.dart';
 import '../auth/screens/login.dart';
+import '../home/home.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -12,7 +12,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int selectedCity = 0;
-
   @override
   void initState() {
     super.initState();
@@ -24,7 +23,7 @@ class _MyAppState extends State<MyApp> {
       initialRoute: LoginScreen.id,
       routes: {
         LoginScreen.id: (context) => const LoginScreen(),
-        "/home": (context) => const HomePage(),
+        HomePage.id: (context) => const HomePage(),
       },
       theme: ThemeData(fontFamily: 'Lexend'),
     );

@@ -15,16 +15,13 @@ class YourJobs extends StatefulWidget {
 
 class _YourJobsState extends State<YourJobs> {
   Timer? timer;
-  bool isListeningToStream = false;
   final ApplicationController _applicationController = ApplicationController();
 
   @override
   void initState() {
-    if (!isListeningToStream) {
-      timer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
-        _applicationController.fetchAllAppsByUser();
-      });
-    }
+    timer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
+      _applicationController.fetchAllAppsByUser();
+    });
     super.initState();
   }
 
@@ -35,7 +32,7 @@ class _YourJobsState extends State<YourJobs> {
       height: MediaQuery.of(context).size.height * 0.81,
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: StreamBuilder<dynamic>(
-        stream: _applicationController.jobsDataStream,
+        stream: _applicationController.appliactionsDataStream,
         builder: (context, snapshot) {
           Widget builtWidget = const SizedBox();
           if (snapshot.connectionState == ConnectionState.waiting) {

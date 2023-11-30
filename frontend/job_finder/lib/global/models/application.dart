@@ -1,6 +1,6 @@
-import 'package:job_finder/global/models/user.dart';
 
 import 'job.dart';
+import 'user.dart';
 
 class Application {
   String? id;
