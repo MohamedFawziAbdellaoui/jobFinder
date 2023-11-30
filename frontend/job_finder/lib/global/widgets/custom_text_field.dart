@@ -4,6 +4,7 @@ class CustomTextFormField extends StatefulWidget {
   final String hintText;
   final String labelText;
   final IconData icon;
+  final String defualVal;
   bool obscure;
   final void Function(String) onSaved;
   final String? Function(String?) validate;
@@ -13,6 +14,7 @@ class CustomTextFormField extends StatefulWidget {
     required this.icon,
     required this.onSaved,
     required this.validate,
+    this.defualVal = "_  ",
     this.obscure = false,
     super.key,
   });
@@ -28,6 +30,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       height: MediaQuery.sizeOf(context).height * .06,
       width: MediaQuery.sizeOf(context).width - 40,
       child: TextFormField(
+        initialValue: widget.defualVal,
         obscureText: widget.obscure,
         decoration: InputDecoration(
           contentPadding:

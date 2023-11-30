@@ -36,14 +36,27 @@ class _ResumeScreenState extends State<ResumeScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: [
-          Row(
-            children: [
-              const Text("Resume"),
-              IconButton(
-                icon: const Icon(Icons.edit),
-                onPressed: () {},
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Resume",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.edit,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {},
+                ),
+              ],
+            ),
           ),
           StreamBuilder<dynamic>(
             stream: _resumeController.resumeDataStream,
@@ -65,23 +78,13 @@ class _ResumeScreenState extends State<ResumeScreen> {
                 }, (resume) {
                   Resume cv = resume;
                   builtWidget = SizedBox(
-                    height: MediaQuery.sizeOf(context).height * .9,
+                    height: MediaQuery.sizeOf(context).height * .7,
                     child: Form(
                       key: _formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      child: ListView(
+                        // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        shrinkWrap: true,
                         children: [
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: IconButton(
-                              icon: _isFormEditable ? const Icon(Icons.done) : const Icon(Icons.edit),
-                              onPressed: () {
-                                setState(() {
-                                  _isFormEditable = !_isFormEditable;
-                                });
-                              },
-                            ),
-                          ),
                           SizedBox(
                             height: MediaQuery.sizeOf(context).height * .2,
                             child: Column(
