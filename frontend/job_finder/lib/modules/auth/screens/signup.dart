@@ -2,21 +2,20 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:job_finder/global/config/local_storage.dart';
 import 'package:job_finder/global/widgets/error_dialog.dart';
-import 'package:job_finder/modules/app/main_app.dart';
 import 'package:job_finder/modules/auth/controllers/auth_controller.dart';
-import 'package:job_finder/modules/auth/screens/signup.dart';
+import 'package:job_finder/modules/auth/screens/login.dart';
 import 'package:job_finder/modules/home/home.dart';
 import '../../../global/widgets/custom_text_field.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
   static const String id = "login";
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String useremail = "";
   String userpass = "";
@@ -85,6 +84,101 @@ class _LoginScreenState extends State<LoginScreen> {
                       return null;
                     },
                   ),
+                  CustomTextFormField(
+                    hintText: "sfax gremda klm 4.5..",
+                    labelText: "Adresse",
+                    icon: Icons.home,
+                    onSaved: (value) {
+                      userpass = value;
+                    },
+                    validate: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "The adresse is required";
+                      } else if (value.length > 30 &&
+                          !value.contains(RegExp(
+                            r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$',
+                          ))) {
+                        return 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (!@#\$%^&*()_+)';
+                      }
+                      return null;
+                    },
+                  ),
+                  CustomTextFormField(
+                    hintText: "address..",
+                    labelText: "Adresse",
+                    icon: Icons.home,
+                    onSaved: (value) {
+                      userpass = value;
+                    },
+                    validate: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "The adresse is required";
+                      } else if (value.length > 30 &&
+                          !value.contains(RegExp(
+                            r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$',
+                          ))) {
+                        return 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (!@#\$%^&*()_+)';
+                      }
+                      return null;
+                    },
+                  ),
+                  CustomTextFormField(
+                    hintText: "sfax gremda klm 4.5..",
+                    labelText: "Adresse",
+                    icon: Icons.home,
+                    onSaved: (value) {
+                      userpass = value;
+                    },
+                    validate: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "The adresse is required";
+                      } else if (value.length > 30 &&
+                          !value.contains(RegExp(
+                            r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$',
+                          ))) {
+                        return 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (!@#\$%^&*()_+)';
+                      }
+                      return null;
+                    },
+                  ),
+                  CustomTextFormField(
+                    hintText: "sfax gremda klm 4.5..",
+                    labelText: "Adresse",
+                    icon: Icons.home,
+                    onSaved: (value) {
+                      userpass = value;
+                    },
+                    validate: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "The adresse is required";
+                      } else if (value.length > 30 &&
+                          !value.contains(RegExp(
+                            r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$',
+                          ))) {
+                        return 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (!@#\$%^&*()_+)';
+                      }
+                      return null;
+                    },
+                  ),
+                  CustomTextFormField(
+                    hintText: "sfax gremda klm 4.5..",
+                    labelText: "Adresse",
+                    icon: Icons.home,
+                    onSaved: (value) {
+                      userpass = value;
+                    },
+                    validate: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "The adresse is required";
+                      } else if (value.length > 30 &&
+                          !value.contains(RegExp(
+                            r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$',
+                          ))) {
+                        return 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (!@#\$%^&*()_+)';
+                      }
+                      return null;
+                    },
+                  ),
                   SizedBox(
                     width: MediaQuery.sizeOf(context).width - 40,
                     child: TextButton(
@@ -144,14 +238,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   Center(
                     child: RichText(
                       text: TextSpan(
-                        text: "You don't have an account. ",
+                        text: "You already have an account? ",
                         style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16.0,
                         ),
                         children: <TextSpan>[
                           TextSpan(
-                            text: "Sign Up",
+                            text: "Login",
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16.0,
@@ -160,8 +254,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        const SignUpScreen()));
+                                    builder: (context) => const LoginScreen()));
                               },
                           ),
                         ],
