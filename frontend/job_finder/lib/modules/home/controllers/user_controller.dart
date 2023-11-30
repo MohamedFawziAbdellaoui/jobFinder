@@ -9,28 +9,31 @@ import 'package:http/http.dart' as http;
 import '../../../global/models/login_response.dart';
 import '../../../global/models/user.dart';
 
-  class UserController {
-    static final _userDataController = StreamController<Either<String, User>>();
-    static Stream<Either<String, User>> get userDataStream =>
-        _userDataController.stream;
-    static Future<void> fetchUserData() async {
-      if(!AuthController.isAuthenticated){
-        _userDataController.sink.add(left("You are not Authenticated"));
-      }
-      LoginResponse userData = LoginResponse();
-      await LocalStrorageConfig.getUserData().then((value) => userData = value!);
-      var response =
-          await http.get(Uri.parse(ApiConfig.url + ApiConfig.auth + userData.userId!), headers: {
-        "Authorization": "Bearer ${userData.token!}",
-      });
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        _userDataController.sink
-            .add(right(User.fromJson(jsonDecode(response.body))));
-      } else {
-        _userDataController.sink.add(left(response.body));
-      }
+class UserController {
+  static final _userDataController = StreamController<Either<String, User>>();
+  static Stream<Either<String, User>> get userDataStream =>
+      _userDataController.stream;
+  static Future<void> fetchUserData() async {
+    if (!AuthController.isAuthenticated) {
+      _userDataController.sink.add(left("You are not Authenticated"));
     }
-    static void dispose() {
-      _userDataController.close();
+    LoginResponse userData = LoginResponse();
+    await LocalStrorageConfig.getUserData().then((value) => userData = value!);
+    var response = await http.get(
+      Uri.parse(ApiConfig.url + ApiConfig.auth + userData.userId!),
+      headers: {
+        "Authorization": "Bearer ${userData.token!}",
+      },
+    );
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      _userDataController.sink
+          .add(right(User.fromJson(jsonDecode(response.body))));
+    } else {
+      _userDataController.sink.add(left(response.body));
     }
   }
+
+  static void dispose() {
+    _userDataController.close();
+  }
+}

@@ -29,7 +29,7 @@ class _YourJobsState extends State<YourJobs> {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height * 0.81,
+      height: MediaQuery.of(context).size.height * 0.78,
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: StreamBuilder<dynamic>(
         stream: _applicationController.appliactionsDataStream,

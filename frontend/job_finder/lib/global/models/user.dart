@@ -6,6 +6,7 @@ class User {
   String? avatar;
   String? cinOrPassport;
   String? identityPic;
+  String? address;
   String? type;
 
   User(
@@ -16,7 +17,8 @@ class User {
       this.avatar,
       this.cinOrPassport,
       this.identityPic,
-      this.type});
+      this.type,
+      this.address});
 
   User.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -27,6 +29,7 @@ class User {
     cinOrPassport = json['cinOrPassport'];
     identityPic = json['identityPic'];
     type = json['type'];
+    address = json['address'];
   }
 
   Map<String, dynamic> toJson() {
@@ -39,6 +42,7 @@ class User {
     data['cinOrPassport'] = cinOrPassport;
     data['identityPic'] = identityPic;
     data['type'] = type;
+    data['address'] = address;
     return data;
   }
 }

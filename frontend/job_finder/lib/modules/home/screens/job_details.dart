@@ -38,7 +38,6 @@ class _JobDetailsState extends State<JobDetails> {
       }, (jobRes) {
         setState(() {
           job = jobRes;
-          print(jobRes.applicantsIds);
           if (jobRes.applicantsIds!.contains(widget.userID)) {
             applied = true;
           }
@@ -54,7 +53,7 @@ class _JobDetailsState extends State<JobDetails> {
     return SafeArea(
       child: Scaffold(
         body: Container(
-          height: MediaQuery.sizeOf(context).height,
+          height: MediaQuery.sizeOf(context).height *.9,
           width: MediaQuery.sizeOf(context).width,
           decoration: const BoxDecoration(
             gradient: LinearGradient(

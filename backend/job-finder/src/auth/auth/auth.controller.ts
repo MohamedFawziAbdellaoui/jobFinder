@@ -1,4 +1,12 @@
-import { Controller, Post, Body, Res, UseGuards, Get, Param, NotFoundException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Get,
+  Param,
+  NotFoundException,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { User } from 'src/auth/schemas/user.schema';
 import { AuthGuard } from '@nestjs/passport';
@@ -11,7 +19,6 @@ export class AuthController {
   async signUp(
     @Body() signupData: { user: User; resume: any },
   ): Promise<{ token: string; userId: string }> {
-    console.log(signupData.user.email);
     return this.authService.signUp(signupData);
   }
   @Post('login')

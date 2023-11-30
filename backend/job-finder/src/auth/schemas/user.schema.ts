@@ -25,6 +25,8 @@ export class User {
 
   @Prop()
   identityPic: string;
+  @Prop()
+  address: string;
 
   @Prop({ required: true, enum: ['entreprise', 'employee'] })
   type: string;
