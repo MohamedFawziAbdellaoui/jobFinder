@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:job_finder/modules/auth/screens/signup.dart';
 import '../auth/screens/login.dart';
 import '../home/home.dart';
 
@@ -22,6 +23,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       initialRoute: LoginScreen.id,
       routes: {
+        SignUpScreen.id : (context) => const SignUpScreen(),
         LoginScreen.id: (context) => const LoginScreen(),
         HomePage.id: (context) => const HomePage(),
       },

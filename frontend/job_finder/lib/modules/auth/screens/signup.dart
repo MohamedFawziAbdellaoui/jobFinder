@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:job_finder/global/config/local_storage.dart';
 import 'package:job_finder/global/widgets/error_dialog.dart';
 import 'package:job_finder/modules/auth/controllers/auth_controller.dart';
@@ -12,14 +15,21 @@ class SignUpScreen extends StatefulWidget {
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
-  static const String id = "login";
+  static const String id = "Signup";
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String userName = '';
+  String userEmail = "";
+  String userPass = "";
+  String userCity = "";
+  String userAddress = "";
+  String userPhone = '';
+  String userIdentity = '';
+  String userCountry = '';
+  String postalCode = '';
   String userType = "Employee";
-  String useremail = "";
-  String userpass = "";
   bool isbtnSubmitted = false;
   @override
   Widget build(BuildContext context) {
@@ -40,37 +50,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           child: Form(
             key: _formKey,
-            child: Center(
+            child: SizedBox(
+              // height: MediaQuery.sizeOf(context).height * .2,
+              width: MediaQuery.sizeOf(context).width,
               child: ListView(
-                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                // mainAxisSize: MainAxisSize.max,
                 children: [
-                  const FlutterLogo(),
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * .2,
+                  ),
+                  const FlutterLogo(
+                    size: 50,
+                  ),
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * .1,
+                  ),
                   CustomTextFormField(
-                    hintText: "Name and last name",
+                    hintText: "Full Name",
                     labelText: "Full Name",
                     icon: Icons.person,
                     onSaved: (value) {
-                      useremail = value;
+                      userName = value;
                     },
                     validate: (value) {
                       if (value == null || value.isEmpty) {
                         return "The Name is required";
-                      } else if (value.length < 8 &&
-                          !value.contains(RegExp(
-                            r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-                          ))) {
+                      } else if (value.length < 5) {
                         return "Enter a valid Name";
                       }
                       return null;
                     },
                   ),
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * .05,
+                  ),
                   CustomTextFormField(
                     hintText: "example@email.com",
                     labelText: "Email",
                     icon: Icons.email,
+                    keyboardType: TextInputType.emailAddress,
                     onSaved: (value) {
-                      useremail = value;
+                      userEmail = value;
                     },
                     validate: (value) {
                       if (value == null || value.isEmpty) {
@@ -84,13 +103,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       return null;
                     },
                   ),
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * .05,
+                  ),
                   CustomTextFormField(
                     hintText: "**********",
                     labelText: "Password",
                     icon: Icons.lock,
                     obscure: true,
                     onSaved: (value) {
-                      userpass = value;
+                      userPass = value;
                     },
                     validate: (value) {
                       if (value == null || value.isEmpty) {
@@ -104,12 +126,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       return null;
                     },
                   ),
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * .05,
+                  ),
                   CustomTextFormField(
-                    hintText: "sfax gremda klm 4.5..",
-                    labelText: "Adresse",
+                    hintText: "route Gremda, ",
+                    labelText: "Address",
                     icon: Icons.home,
                     onSaved: (value) {
-                      userpass = value;
+                      userAddress = value;
                     },
                     validate: (value) {
                       if (value == null || value.isEmpty) {
@@ -122,108 +147,83 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       }
                       return null;
                     },
+                  ),
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * .05,
                   ),
                   CustomTextFormField(
                     hintText: "11 222 333",
                     labelText: "Phone Number",
                     icon: Icons.phone,
+                    keyboardType: TextInputType.number,
                     onSaved: (value) {
-                      userpass = value;
+                      userPhone = value;
                     },
                     validate: (value) {
                       if (value == null || value.isEmpty) {
                         return "The phone number is required";
-                      } else if (value.length > 30 &&
-                          !value.contains(RegExp(
-                            r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$',
-                          ))) {
-                        return 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (!@#\$%^&*()_+)';
+                      }
+                      if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                        return "Enter a valid phone number";
                       }
                       return null;
                     },
                   ),
-                  CustomTextFormField(
-                    hintText: "Avatar",
-                    labelText: "avatar",
-                    icon: Icons.home,
-                    onSaved: (value) {
-                      userpass = value;
-                    },
-                    validate: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "The adresse is required";
-                      } else if (value.length > 30 &&
-                          !value.contains(RegExp(
-                            r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$',
-                          ))) {
-                        return 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (!@#\$%^&*()_+)';
-                      }
-                      return null;
-                    },
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * .05,
+                  ),
+                  Center(
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text("Pick your avatar"),
+                          Icon(Icons.cloud_upload_rounded),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * .05,
                   ),
                   CustomTextFormField(
                     hintText: "Cin or passport",
                     labelText: "Cin or passport",
                     icon: Icons.home,
                     onSaved: (value) {
-                      userpass = value;
+                      userIdentity = value;
                     },
                     validate: (value) {
                       if (value == null || value.isEmpty) {
-                        return "The adresse is required";
-                      } else if (value.length > 30 &&
-                          !value.contains(RegExp(
-                            r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$',
-                          ))) {
-                        return 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (!@#\$%^&*()_+)';
+                        return "The CIN is required";
                       }
                       return null;
                     },
                   ),
-                  CustomTextFormField(
-                    hintText: "Identity Pic",
-                    labelText: "Identity Pic",
-                    icon: Icons.home,
-                    onSaved: (value) {
-                      userpass = value;
-                    },
-                    validate: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "The adresse is required";
-                      } else if (value.length > 30 &&
-                          !value.contains(RegExp(
-                            r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$',
-                          ))) {
-                        return 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (!@#\$%^&*()_+)';
-                      }
-                      return null;
-                    },
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * .05,
                   ),
-                  CustomTextFormField(
-                    hintText: "address",
-                    labelText: "address",
-                    icon: Icons.home,
-                    onSaved: (value) {
-                      userpass = value;
-                    },
-                    validate: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "The adresse is required";
-                      } else if (value.length > 30 &&
-                          !value.contains(RegExp(
-                            r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$',
-                          ))) {
-                        return 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (!@#\$%^&*()_+)';
-                      }
-                      return null;
-                    },
+                 Center(
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text("Pick your IdentityPic"),
+                          Icon(Icons.cloud_upload_rounded),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * .05,
                   ),
                   CustomTextFormField(
                     hintText: "Country",
                     labelText: "Country",
                     icon: Icons.home,
                     onSaved: (value) {
-                      userpass = value;
                     },
                     validate: (value) {
                       if (value == null || value.isEmpty) {
@@ -237,32 +237,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       return null;
                     },
                   ),
-                  CustomTextFormField(
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * .05,
+                  ),
+                  Row(
+                    children: [
+                      CustomTextFormField(
                     hintText: "City",
                     labelText: "City",
                     icon: Icons.home,
                     onSaved: (value) {
-                      userpass = value;
                     },
-                    validate: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "The city is required";
-                      } else if (value.length > 30 &&
-                          !value.contains(RegExp(
-                            r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$',
-                          ))) {
-                        return 'City must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (!@#\$%^&*()_+)';
-                      }
-                      return null;
-                    },
+                    validate: (value) {},
+                    width: MediaQuery.sizeOf(context).width *.3,
                   ),
                   CustomTextFormField(
                     hintText: "Postal Code",
                     labelText: "Postal Code",
                     icon: Icons.home,
                     onSaved: (value) {
-                      userpass = value;
                     },
+                    width: MediaQuery.sizeOf(context).width *.3,
                     validate: (value) {
                       if (value == null || value.isEmpty) {
                         return "The postal code is required";
@@ -275,24 +270,56 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       return null;
                     },
                   ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * .05,
+                  ),
+                    ],
+                  ),
+                  Center(
+                    child: Text(
+                      "Type : ",
+                      style: TextStyle(
+                        color: Colors.grey[850],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.sizeOf(context).width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Type : ",
-                            style: TextStyle(color: Colors.grey[850])),
-                        RadioListTile(
-                          title: const Text('Employee'),
-                          value: "Employee",
-                          groupValue: userType,
-                          onChanged: (value) {},
+                        SizedBox(
+                          width: MediaQuery.sizeOf(context).width * .5,
+                          child: RadioListTile(
+                            title: const Text('Employee'),
+                            value: "Employee",
+                            groupValue: userType,
+                            onChanged: (value) {
+                              setState(() {
+                                userType = value!;
+                              });
+                            },
+                          ),
                         ),
-                        RadioListTile(
-                          title: const Text('Enterprise'),
-                          value: "Employee",
-                          groupValue: userType,
-                          onChanged: (value) {},
+                        SizedBox(
+                          width: MediaQuery.sizeOf(context).width * .5,
+                          child: RadioListTile(
+                            title: const Text('Enterprise'),
+                            value: "Entreprise",
+                            groupValue: userType,
+                            onChanged: (value) {
+                              setState(() {
+                                userType = value!;
+                              });
+                            },
+                          ),
                         ),
-                      ]),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * .05,
+                  ),
                   SizedBox(
                     width: MediaQuery.sizeOf(context).width - 40,
                     child: TextButton(
@@ -317,7 +344,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
                                 final result = await AuthController.loginUser(
-                                    useremail, userpass);
+                                    userEmail, userPass);
                                 result.fold(
                                   (error) {
                                     showErrorDialog(context, error);
@@ -342,12 +369,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               color: Colors.white,
                             )
                           : const Text(
-                              "Login",
+                              "Sign Up",
                               style: TextStyle(
                                 color: Colors.white,
                               ),
                             ),
                     ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * .05,
                   ),
                   Center(
                     child: RichText(

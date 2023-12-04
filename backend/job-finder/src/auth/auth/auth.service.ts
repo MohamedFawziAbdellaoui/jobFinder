@@ -10,6 +10,7 @@ import { User } from 'src/auth/schemas/user.schema';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { ResumeService } from 'src/resume/resume/resume.service';
+import { createWriteStream } from 'fs';
 
 @Injectable()
 export class AuthService {
@@ -34,6 +35,23 @@ export class AuthService {
     // Hash the user's password
     const hashedPassword = await bcrypt.hash(user.password, 10);
     user.password = hashedPassword;
+    // Handle file uploads for avatar
+    if (user.avatar) {
+      const avatarFileName = ``;
+      await createWriteStream(`./uploads/avatars/${avatarFileName}`).write(
+        user.avatar,
+      );
+      user.avatar = `uploads/avatars/${avatarFileName}`;
+    }
+
+    // Handle file uploads for identityPic
+    if (user.identityPic) {
+      const identityPicFileName = `identityPic.${user.identityPic}`;
+      await createWriteStream(
+        `./uploads/identityPics/${identityPicFileName}`,
+      ).write(user.identityPic);
+      user.identityPic = `uploads/identityPics/${identityPicFileName}`;
+    }
 
     // Create the user
     const createdUser = await this.userModel.create(user);

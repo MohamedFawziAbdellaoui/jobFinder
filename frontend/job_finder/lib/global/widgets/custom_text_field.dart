@@ -5,8 +5,11 @@ class CustomTextFormField extends StatefulWidget {
   final String labelText;
   final IconData icon;
   bool obscure;
+  TextInputType keyboardType;
   final void Function(String) onSaved;
   final String? Function(String?) validate;
+  double? width;
+  double? height;
   CustomTextFormField({
     required this.hintText,
     required this.labelText,
@@ -14,6 +17,9 @@ class CustomTextFormField extends StatefulWidget {
     required this.onSaved,
     required this.validate,
     this.obscure = false,
+    this.keyboardType = TextInputType.text,
+    this.width ,
+    this.height,
     super.key,
   });
 
@@ -25,9 +31,10 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.sizeOf(context).height * .06,
-      width: MediaQuery.sizeOf(context).width - 40,
+      height: widget.height ?? MediaQuery.sizeOf(context).height * .06,
+      width: widget.width ?? MediaQuery.sizeOf(context).width - 40,
       child: TextFormField(
+        keyboardType: widget.keyboardType,
         obscureText: widget.obscure,
         decoration: InputDecoration(
           contentPadding:
