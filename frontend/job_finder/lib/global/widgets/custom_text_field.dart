@@ -4,6 +4,7 @@ class CustomTextFormField extends StatefulWidget {
   final String hintText;
   final String labelText;
   final IconData icon;
+  final String defualVal;
   bool obscure;
   TextInputType keyboardType;
   final void Function(String) onSaved;
@@ -16,6 +17,7 @@ class CustomTextFormField extends StatefulWidget {
     required this.icon,
     required this.onSaved,
     required this.validate,
+    this.defualVal = "_  ",
     this.obscure = false,
     this.keyboardType = TextInputType.text,
     this.width ,
@@ -35,6 +37,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       width: widget.width ?? MediaQuery.sizeOf(context).width - 40,
       child: TextFormField(
         keyboardType: widget.keyboardType,
+        initialValue: widget.defualVal,
         obscureText: widget.obscure,
         decoration: InputDecoration(
           contentPadding:

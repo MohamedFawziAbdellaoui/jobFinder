@@ -27,6 +27,12 @@ export class User {
   identityPic: string;
   @Prop()
   address: string;
+  @Prop()
+  city: string;
+  @Prop()
+  country: string;
+  @Prop()
+  postalCode: string;
 
   @Prop({ required: true, enum: ['entreprise', 'employee'] })
   type: string;

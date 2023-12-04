@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:job_finder/global/config/local_storage.dart';
 import 'package:job_finder/modules/home/screens/browse.dart';
 import 'package:job_finder/modules/home/screens/resume.dart';
+import 'package:job_finder/modules/home/screens/settings.dart';
 import 'package:job_finder/modules/home/screens/your_jobs.dart';
 import '../../global/models/user.dart';
 import '../../global/widgets/custom_app_bar.dart';
@@ -27,11 +28,7 @@ class _HomePageState extends State<HomePage> {
     ),
     const YourJobs(),
     const ResumeScreen(),
-    Container(
-      color: Colors.blue,
-      height: 200,
-      width: 500,
-    ),
+    const Settings(),
   ];
   @override
   void initState() {
@@ -41,18 +38,6 @@ class _HomePageState extends State<HomePage> {
     LocalStrorageConfig.getUserData().then((value) {
       setState(() {
         userID = value!.userId!;
-        childsList = [
-          Browse(
-            userId: value.userId!,
-          ),
-          const YourJobs(),
-          const ResumeScreen(),
-          Container(
-            color: Colors.blue,
-            height: 200,
-            width: 500,
-          ),
-        ];
       });
     });
     super.initState();
