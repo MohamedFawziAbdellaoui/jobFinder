@@ -43,7 +43,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               onTap: () {
                 Navigator.pop(context);
                 _pickImage(ImageSource.gallery);
-                picTaken();
               },
             ),
             ListTile(
@@ -51,7 +50,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               onTap: () {
                 Navigator.pop(context);
                 _pickImage(ImageSource.camera);
-                picTaken();
               },
             ),
           ],
