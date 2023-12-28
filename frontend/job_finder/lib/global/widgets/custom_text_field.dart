@@ -17,7 +17,7 @@ class CustomTextFormField extends StatefulWidget {
     required this.icon,
     required this.onSaved,
     required this.validate,
-    this.defualVal = "_  ",
+    this.defualVal = "",
     this.obscure = false,
     this.keyboardType = TextInputType.text,
     this.width ,

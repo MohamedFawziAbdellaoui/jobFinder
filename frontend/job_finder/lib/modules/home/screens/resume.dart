@@ -82,7 +82,6 @@ class _ResumeScreenState extends State<ResumeScreen> {
                     child: Form(
                       key: _formKey,
                       child: ListView(
-                        // mainAxisAlignment: MainAxisAlignment.spaceAround,
                         shrinkWrap: true,
                         children: [
                           SizedBox(

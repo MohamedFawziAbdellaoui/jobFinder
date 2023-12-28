@@ -1,12 +1,12 @@
-import 'dart:io';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:job_finder/global/config/local_storage.dart';
+import 'package:job_finder/global/models/resume.dart';
+import 'package:job_finder/global/models/user.dart';
 import 'package:job_finder/global/widgets/error_dialog.dart';
 import 'package:job_finder/modules/auth/controllers/auth_controller.dart';
 import 'package:job_finder/modules/auth/screens/login.dart';
+import 'package:job_finder/modules/company/company_home.dart';
 import 'package:job_finder/modules/home/home.dart';
 import '../../../global/widgets/custom_text_field.dart';
 
@@ -204,7 +204,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(
                     height: MediaQuery.sizeOf(context).height * .05,
                   ),
-                 Center(
+                  Center(
                     child: GestureDetector(
                       onTap: () {},
                       child: const Row(
@@ -223,8 +223,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     hintText: "Country",
                     labelText: "Country",
                     icon: Icons.home,
-                    onSaved: (value) {
-                    },
+                    onSaved: (value) {},
                     validate: (value) {
                       if (value == null || value.isEmpty) {
                         return "The adresse is required";
@@ -243,36 +242,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Row(
                     children: [
                       CustomTextFormField(
-                    hintText: "City",
-                    labelText: "City",
-                    icon: Icons.home,
-                    onSaved: (value) {
-                    },
-                    validate: (value) {},
-                    width: MediaQuery.sizeOf(context).width *.3,
-                  ),
-                  CustomTextFormField(
-                    hintText: "Postal Code",
-                    labelText: "Postal Code",
-                    icon: Icons.home,
-                    onSaved: (value) {
-                    },
-                    width: MediaQuery.sizeOf(context).width *.3,
-                    validate: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "The postal code is required";
-                      } else if (value.length > 30 &&
-                          !value.contains(RegExp(
-                            r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$',
-                          ))) {
-                        return 'postal code must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (!@#\$%^&*()_+)';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: MediaQuery.sizeOf(context).height * .05,
-                  ),
+                        hintText: "City",
+                        labelText: "City",
+                        icon: Icons.home,
+                        onSaved: (value) {},
+                        validate: (value) {},
+                        width: MediaQuery.sizeOf(context).width * .3,
+                      ),
+                      CustomTextFormField(
+                        hintText: "Postal Code",
+                        labelText: "Postal Code",
+                        icon: Icons.home,
+                        onSaved: (value) {},
+                        width: MediaQuery.sizeOf(context).width * .3,
+                        validate: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "The postal code is required";
+                          } else if (value.length > 30 &&
+                              !value.contains(RegExp(
+                                r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$',
+                              ))) {
+                            return 'postal code must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (!@#\$%^&*()_+)';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(
+                        height: MediaQuery.sizeOf(context).height * .05,
+                      ),
                     ],
                   ),
                   Center(
@@ -343,8 +340,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               });
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
-                                final result = await AuthController.loginUser(
-                                    userEmail, userPass);
+                                
+                                User newUser = User(
+                                  name: userName,
+                                  address: userAddress,
+                                  country: "Tunisia",
+                                  city: "Sfax",
+                                  email: userEmail,
+                                  identityPic: "",
+                                  avatar: "",
+                                  phoneNumber: userPhone,
+                                  type: userType,
+                                  cinOrPassport: userIdentity,
+                                  password: userPass,
+                                  postalCode: "3021",
+                                );
+                                final result =
+                                    await AuthController.signUpUser(newUser,Resume());
                                 result.fold(
                                   (error) {
                                     showErrorDialog(context, error);
@@ -352,8 +364,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   (loginResponse) async {
                                     await LocalStrorageConfig.saveUserData(
                                         loginResponse);
-                                    Navigator.of(context)
+                                    if(userType == "Employee"){
+                                      Navigator.of(context)
                                         .pushNamed(HomePage.id);
+                                    }else {
+                                      Navigator.of(context)
+                                        .pushNamed(CompanyHome.id);
+                                    }
                                   },
                                 );
                               }

@@ -23,6 +23,23 @@ import { promisify } from 'util';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+  @Post('login')
+  async login(@Body() loginData: { email: string; password: string }) {
+    try {
+      const { email, password } = loginData;
+      const result = await this.authService.login(email, password);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+  @Post('signup')
+  async signUp(
+    @Body() user: User,
+  ): Promise<{ token: string; userId: string; type: string }> {
+    // console.log(signupData);
+    return this.authService.signUp(user);
+  }
   @Post('/upload-avatar')
   @UseInterceptors(
     FileInterceptor('avatar', {
@@ -63,22 +80,6 @@ export class AuthController {
     return { identityPicPath };
   }
 
-  @Post('/signup')
-  async signUp(
-    @Body() signupData: { user: User; resume: any },
-  ): Promise<{ token: string; userId: string }> {
-    return this.authService.signUp(signupData);
-  }
-  @Post('login')
-  async login(@Body() loginData: { email: string; password: string }) {
-    try {
-      const { email, password } = loginData;
-      const result = await this.authService.login(email, password);
-      return result;
-    } catch (error) {
-      throw error;
-    }
-  }
   @Get('avatar/:path')
   async getAvatarByPath(
     @Param('path') imagePath: string,

@@ -5,6 +5,7 @@ import 'package:job_finder/global/widgets/error_dialog.dart';
 import 'package:job_finder/modules/app/main_app.dart';
 import 'package:job_finder/modules/auth/controllers/auth_controller.dart';
 import 'package:job_finder/modules/auth/screens/signup.dart';
+import 'package:job_finder/modules/company/company_home.dart';
 import 'package:job_finder/modules/home/home.dart';
 import '../../../global/widgets/custom_text_field.dart';
 
@@ -117,8 +118,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                   (loginResponse) async {
                                     await LocalStrorageConfig.saveUserData(
                                         loginResponse);
-                                    Navigator.of(context)
+                                    if(loginResponse.userType == "Employee"){
+                                      Navigator.of(context)
                                         .pushNamed(HomePage.id);
+                                    }else {
+                                      Navigator.of(context)
+                                        .pushNamed(CompanyHome.id);
+                                    }
                                   },
                                 );
                               }

@@ -10,7 +10,6 @@ import { User } from 'src/auth/schemas/user.schema';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { ResumeService } from 'src/resume/resume/resume.service';
-import { createWriteStream } from 'fs';
 
 @Injectable()
 export class AuthService {
@@ -21,11 +20,10 @@ export class AuthService {
     private resumeService: ResumeService,
   ) {}
 
-  async signUp(signupData: {
-    user: User;
-    resume: any;
-  }): Promise<{ token: string; userId: string }> {
-    const { user, resume } = signupData;
+  async signUp(
+    user: User,
+  ): Promise<{ token: string; userId: string; type: string }> {
+    console.log(user);
 
     const existingUser = await this.userModel.findOne({ email: user.email });
     if (existingUser) {
@@ -35,40 +33,27 @@ export class AuthService {
     // Hash the user's password
     const hashedPassword = await bcrypt.hash(user.password, 10);
     user.password = hashedPassword;
-    // Handle file uploads for avatar
-    if (user.avatar) {
-      const avatarFileName = ``;
-      await createWriteStream(`./uploads/avatars/${avatarFileName}`).write(
-        user.avatar,
-      );
-      user.avatar = `uploads/avatars/${avatarFileName}`;
-    }
-
-    // Handle file uploads for identityPic
-    if (user.identityPic) {
-      const identityPicFileName = `identityPic.${user.identityPic}`;
-      await createWriteStream(
-        `./uploads/identityPics/${identityPicFileName}`,
-      ).write(user.identityPic);
-      user.identityPic = `uploads/identityPics/${identityPicFileName}`;
-    }
 
     // Create the user
     const createdUser = await this.userModel.create(user);
 
-    if (user.type === 'employee') {
-      // Set the user ID in the resume data
-      resume.userId = createdUser._id.toString();
-      // Create the resume
-      const createdResume = await this.resumeService.createResume(resume);
-    }
+    // if (user.type === 'employee') {
+    //   // Set the user ID in the resume data
+    //   resume.userId = createdUser._id.toString();
+    //   // Create the resume
+    //   const createdResume = await this.resumeService.createResume(resume);
+    // }
     // Sign a JWT token for the user
     const token = this.jwtService.sign({
       id: createdUser._id,
       type: user.type,
     });
 
-    return { token, userId: createdUser._id.toString() };
+    return {
+      token,
+      userId: createdUser._id.toString(),
+      type: createdUser.type,
+    };
   }
   async login(email, password) {
     try {
@@ -90,7 +75,7 @@ export class AuthService {
       // If email and password are valid, generate a JWT token
       const token = this.jwtService.sign({ id: user._id, type: user.type });
 
-      return { token, userId: user._id.toString() };
+      return { token, userId: user._id.toString(), type: user.type };
     } catch (error) {
       // Handle errors and throw the appropriate status code
       if (error.message === 'User not found') {
