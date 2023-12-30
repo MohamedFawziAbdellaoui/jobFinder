@@ -118,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   (loginResponse) async {
                                     await LocalStrorageConfig.saveUserData(
                                         loginResponse);
-                                    if(loginResponse.userType == "Employee"){
+                                    if(loginResponse.userType == "employee"){
                                       Navigator.of(context)
                                         .pushNamed(HomePage.id);
                                     }else {

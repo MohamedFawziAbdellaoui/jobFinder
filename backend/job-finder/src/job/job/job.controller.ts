@@ -44,7 +44,6 @@ export class JobController {
   @Get('by-user')
   @UseGuards(AuthGuard())
   async getJobsByUserID(@Query('userID') userID: string) {
-    console.log(userID);
     try {
       const jobs = await this.jobService.findJobsByUserID(userID);
       return jobs;
@@ -71,7 +70,6 @@ export class JobController {
   @UseGuards(AuthGuard())
   async createJob(@Body() jobData: Job, @Request() req): Promise<Job> {
     const entreprise_id = req.user.id;
-    console.log(entreprise_id);
     jobData.entreprise_id = entreprise_id;
     return this.jobService.createJob(jobData);
   }

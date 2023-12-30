@@ -19,6 +19,7 @@ import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import * as fs from 'fs';
 import { promisify } from 'util';
+import { sign } from 'crypto';
 
 @Controller('auth')
 export class AuthController {
@@ -35,10 +36,10 @@ export class AuthController {
   }
   @Post('signup')
   async signUp(
-    @Body() user: User,
+    @Body() signUpData,
   ): Promise<{ token: string; userId: string; type: string }> {
-    // console.log(signupData);
-    return this.authService.signUp(user);
+    const { user, resume } = signUpData;
+    return this.authService.signUp(user, resume);
   }
   @Post('/upload-avatar')
   @UseInterceptors(

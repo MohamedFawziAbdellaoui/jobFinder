@@ -22,9 +22,8 @@ export class AuthService {
 
   async signUp(
     user: User,
+    resume: any,
   ): Promise<{ token: string; userId: string; type: string }> {
-    console.log(user);
-
     const existingUser = await this.userModel.findOne({ email: user.email });
     if (existingUser) {
       new InternalServerErrorException('User with this email already exists');
@@ -37,12 +36,12 @@ export class AuthService {
     // Create the user
     const createdUser = await this.userModel.create(user);
 
-    // if (user.type === 'employee') {
-    //   // Set the user ID in the resume data
-    //   resume.userId = createdUser._id.toString();
-    //   // Create the resume
-    //   const createdResume = await this.resumeService.createResume(resume);
-    // }
+    if (user.type === 'employee') {
+      // Set the user ID in the resume data
+      resume.userId = createdUser._id.toString();
+      // Create the resume
+      const createdResume = await this.resumeService.createResume(resume);
+    }
     // Sign a JWT token for the user
     const token = this.jwtService.sign({
       id: createdUser._id,

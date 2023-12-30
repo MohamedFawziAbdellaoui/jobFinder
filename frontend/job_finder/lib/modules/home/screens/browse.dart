@@ -131,7 +131,9 @@ class _BrowseState extends State<Browse> {
                             AppConstants.tunisianCities[selectedCity]))
                         .toList();
                   }
-                  return Expanded(
+                  return SizedBox(
+                    height: MediaQuery.sizeOf(context).height *.78,
+                    width: MediaQuery.sizeOf(context).width,
                     child: ListView.separated(
                       shrinkWrap: true,
                       itemCount: jobsList.length,
