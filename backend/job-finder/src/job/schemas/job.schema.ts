@@ -4,7 +4,6 @@ import { now } from 'mongoose';
 export enum PricingType {
   PER_HOUR = 'per hour',
   PER_DAY = 'per day',
-  ALL = 'all',
 }
 
 @Schema({
@@ -22,8 +21,8 @@ export default class Job {
   @Prop({ required: true })
   duration: string;
   @Prop({ required: true })
-  contract: File;
-  @Prop()
+  contract: string;
+  @Prop({ required: true })
   entreprise_id: string;
   @Prop({ required: true })
   startDate: string;

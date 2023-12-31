@@ -19,7 +19,6 @@ import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import * as fs from 'fs';
 import { promisify } from 'util';
-import { sign } from 'crypto';
 
 @Controller('auth')
 export class AuthController {
@@ -134,7 +133,7 @@ export class AuthController {
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-
+    console.log(user);
     return user;
   }
 }
